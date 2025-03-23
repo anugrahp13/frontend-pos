@@ -16,6 +16,9 @@ import PaginationComponent from "../../components/Pagination";
 //import create category
 import CategoryCreate from "./create";
 
+//import edit category
+import CategoryEdit from "./edit";
+
 export default function CategoriesIndex() {
   //state categories
   const [categories, setCategories] = useState([]);
@@ -153,7 +156,12 @@ export default function CategoriesIndex() {
                               {category.description}
                             </td>
                             <td>
-                              <div className="btn-list flex-nowrap"></div>
+                              <div className="btn-list flex-nowrap">
+                                <CategoryEdit
+                                  categoryId={category.id}
+                                  fetchData={fetchData}
+                                />
+                              </div>
                             </td>
                           </tr>
                         ))
