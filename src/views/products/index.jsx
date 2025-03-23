@@ -16,6 +16,9 @@ import PaginationComponent from "../../components/Pagination";
 //import rupiah
 import moneyFormat from "../../utils/moneyFormat";
 
+//impor component Barcode
+import Barcode from "./components/Barcode";
+
 export default function ProductsIndex() {
   //state products
   const [products, setProducts] = useState([]);
@@ -135,7 +138,16 @@ export default function ProductsIndex() {
                       {products.length > 0 ? (
                         products.map((product, index) => (
                           <tr key={index}>
-                            <td data-label="Barcode">{product.barcode}</td>
+                            <td data-label="Barcode">
+                              <Barcode
+                                value={product.barcode}
+                                format={"CODE39"}
+                                lineColor={"#000"}
+                                width={1}
+                                height={20}
+                                fontSize={10}
+                              />
+                            </td>
                             <td data-label="Category Name">
                               <div className="d-flex py-1 align-items-center">
                                 <span
