@@ -25,6 +25,9 @@ import moneyFormat from "../../utils/moneyFormat";
 //import component pagination
 import PaginationComponent from "../../components/Pagination";
 
+//import component Payment
+import Payment from "./components/Payment";
+
 export default function TransactionsIndex() {
   //state products
   const [products, setProducts] = useState([]);
@@ -254,6 +257,7 @@ export default function TransactionsIndex() {
                     <h3 className="mb-0">Total ({carts.length} Items)</h3>
                   </div>
                   <hr />
+                  <Payment totalCarts={totalCarts} fetchCarts={fetchCarts} />
                 </div>
               </div>
             </div>
