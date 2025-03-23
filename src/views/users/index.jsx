@@ -16,6 +16,9 @@ import PaginationComponent from "../../components/Pagination";
 //import create user
 import UserCreate from "./create";
 
+//import edit user
+import UserEdit from "./edit";
+
 export default function UsersIndex() {
   //state users
   const [users, setUsers] = useState([]);
@@ -140,7 +143,12 @@ export default function UsersIndex() {
                               {user.email}
                             </td>
                             <td>
-                              <div className="btn-list flex-nowrap"></div>
+                              <div className="btn-list flex-nowrap">
+                                <UserEdit
+                                  userId={user.id}
+                                  fetchData={fetchData}
+                                />
+                              </div>
                             </td>
                           </tr>
                         ))
