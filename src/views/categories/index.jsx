@@ -19,6 +19,9 @@ import CategoryCreate from "./create";
 //import edit category
 import CategoryEdit from "./edit";
 
+//import delete button
+import DeleteButton from "../../components/DeleteButton";
+
 export default function CategoriesIndex() {
   //state categories
   const [categories, setCategories] = useState([]);
@@ -159,6 +162,11 @@ export default function CategoriesIndex() {
                               <div className="btn-list flex-nowrap">
                                 <CategoryEdit
                                   categoryId={category.id}
+                                  fetchData={fetchData}
+                                />
+                                <DeleteButton
+                                  id={category.id}
+                                  endpoint="/api/categories"
                                   fetchData={fetchData}
                                 />
                               </div>
