@@ -145,7 +145,7 @@ export default function CategoriesIndex() {
                                   style={{
                                     backgroundImage: `url(${
                                       import.meta.env.VITE_APP_BASEURL
-                                    }/${category.image})`,
+                                    }/uploads/${category.image})`,
                                   }}
                                 ></span>
                                 <div className="flex-fill">
