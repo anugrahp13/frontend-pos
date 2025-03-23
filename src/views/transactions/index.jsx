@@ -16,6 +16,12 @@ import ProductList from "./components/ProductList";
 //import component category list
 import CategoryList from "./components/CategoryList";
 
+//import component order item list
+import OrderItemList from "./components/OrderItemList";
+
+//import moneyFormat
+import moneyFormat from "../../utils/moneyFormat";
+
 //import component pagination
 import PaginationComponent from "../../components/Pagination";
 
@@ -41,6 +47,10 @@ export default function TransactionsIndex() {
 
   //state currentCategoryId
   const [currentCategoryId, setCurrentCategoryId] = useState(null);
+
+  //state carts
+  const [carts, setCarts] = useState([]);
+  const [totalCarts, setTotalCarts] = useState(0);
 
   //token
   const token = Cookies.get("token");
@@ -130,6 +140,22 @@ export default function TransactionsIndex() {
     }
   };
 
+  //function "fetchCarts"
+  const fetchCarts = async () => {
+    if (token) {
+      //set authorization header with token
+      Api.defaults.headers.common["Authorization"] = token;
+
+      await Api.get("/api/carts").then((response) => {
+        //set data response to state "carts"
+        setCarts(response.data.data);
+
+        //set totalCarts
+        setTotalCarts(response.data.totalPrice);
+      });
+    }
+  };
+
   //hook
   useEffect(() => {
     //call function "fetchProducts"
@@ -142,6 +168,9 @@ export default function TransactionsIndex() {
 
     //call function "fetchCategories"
     fetchCategories();
+
+    //call function "fetchCarts"
+    fetchCarts();
   }, []);
 
   return (
@@ -217,11 +246,12 @@ export default function TransactionsIndex() {
                 </div>
                 <div className="card-body scrollable-card-body p-0">
                   {/* Order Items */}
+                  <OrderItemList carts={carts} />
                 </div>
                 <div className="card-body">
                   <div className="mt-3">
-                    <h3 className="float-end"></h3>
-                    <h3 className="mb-0">Total</h3>
+                    <h3 className="float-end">{moneyFormat(totalCarts)}</h3>
+                    <h3 className="mb-0">Total ({carts.length} Items)</h3>
                   </div>
                   <hr />
                 </div>
