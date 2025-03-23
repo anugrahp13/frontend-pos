@@ -46,7 +46,7 @@ export default function OrderItemList({ carts, fetchCarts }) {
             <div className="card rounded">
               <div className="card-body d-flex align-items-center">
                 <img
-                  src={`${import.meta.env.VITE_APP_BASEURL}/${
+                  src={`${import.meta.env.VITE_APP_BASEURL}/uploads/${
                     cart.product.image
                   }`}
                   alt={cart.product.title}
