@@ -165,7 +165,7 @@ export default function ProductsIndex() {
                                   style={{
                                     backgroundImage: `url(${
                                       import.meta.env.VITE_APP_BASEURL
-                                    }/${product.image})`,
+                                    }/uploads/${product.image})`,
                                   }}
                                 ></span>
                                 <div className="flex-fill">
