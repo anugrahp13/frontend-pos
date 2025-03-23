@@ -13,6 +13,9 @@ import Api from "../../services/api";
 //import component pagination
 import PaginationComponent from "../../components/Pagination";
 
+//import create user
+import UserCreate from "./create";
+
 export default function UsersIndex() {
   //state users
   const [users, setUsers] = useState([]);
@@ -97,6 +100,7 @@ export default function UsersIndex() {
           <div className="row">
             <div className="col-12 mb-3">
               <div className="input-group">
+                <UserCreate fetchData={fetchData} />
                 <input
                   type="text"
                   className="form-control"
