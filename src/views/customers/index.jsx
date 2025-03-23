@@ -16,6 +16,9 @@ import PaginationComponent from "../../components/Pagination";
 //import create customer
 import CustomerCreate from "./create";
 
+//import edit customer
+import CustomerEdit from "./edit";
+
 export default function CustomersIndex() {
   //state customers
   const [customers, setCustomers] = useState([]);
@@ -141,7 +144,12 @@ export default function CustomersIndex() {
                               {customer.address}
                             </td>
                             <td>
-                              <div className="btn-list flex-nowrap"></div>
+                              <div className="btn-list flex-nowrap">
+                                <CustomerEdit
+                                  customerId={customer.id}
+                                  fetchData={fetchData}
+                                />
+                              </div>
                             </td>
                           </tr>
                         ))
