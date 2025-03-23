@@ -13,6 +13,9 @@ import Cookies from "js-cookie";
 //import component product list
 import ProductList from "./components/ProductList";
 
+//import component category list
+import CategoryList from "./components/CategoryList";
+
 //import component pagination
 import PaginationComponent from "../../components/Pagination";
 
@@ -32,6 +35,12 @@ export default function TransactionsIndex() {
 
   //ref search
   const searchInputRef = useRef(null);
+
+  //state categories
+  const [categories, setCategories] = useState([]);
+
+  //state currentCategoryId
+  const [currentCategoryId, setCurrentCategoryId] = useState(null);
 
   //token
   const token = Cookies.get("token");
@@ -83,6 +92,44 @@ export default function TransactionsIndex() {
     fetchProductByBarcode(e.target.value);
   };
 
+  //function "fetchCategories"
+  const fetchCategories = async () => {
+    if (token) {
+      //set authorization header with token
+      Api.defaults.headers.common["Authorization"] = token;
+
+      await Api.get("/api/categories-all").then((response) => {
+        //set data response to state "catgeories"
+        setCategories(response.data.data);
+      });
+    }
+  };
+
+  //function fetchProductByCategoryID
+  const fetchProductByCategoryID = async (categoryId, pageNumber) => {
+    if (token) {
+      //define variable "page"
+      const page = pageNumber ? pageNumber : pagination.currentPage;
+
+      //set authorization header with token
+      Api.defaults.headers.common["Authorization"] = token;
+
+      await Api.get(
+        `/api/products-by-category/${categoryId}?page=${page}&limit=9`
+      ).then((response) => {
+        //set data response to state "products"
+        setProducts(response.data.data);
+
+        //set data response to state "pagination"
+        setPagination({
+          currentPage: response.data.pagination.currentPage,
+          perPage: response.data.pagination.perPage,
+          total: response.data.pagination.total,
+        });
+      });
+    }
+  };
+
   //hook
   useEffect(() => {
     //call function "fetchProducts"
@@ -92,6 +139,9 @@ export default function TransactionsIndex() {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
+
+    //call function "fetchCategories"
+    fetchCategories();
   }, []);
 
   return (
@@ -133,6 +183,12 @@ export default function TransactionsIndex() {
               </form>
 
               {/* Category List */}
+              <CategoryList
+                categories={categories}
+                fetchProducts={fetchProducts}
+                fetchProductByCategoryID={fetchProductByCategoryID}
+                setCurrentCategoryId={setCurrentCategoryId}
+              />
 
               {/* Product List */}
               <ProductList products={products} />
@@ -143,7 +199,13 @@ export default function TransactionsIndex() {
                   currentPage={pagination.currentPage}
                   perPage={pagination.perPage}
                   total={pagination.total}
-                  onChange={(pageNumber) => fetchProducts(pageNumber)}
+                  onChange={(pageNumber) => {
+                    if (currentCategoryId) {
+                      fetchProductByCategoryID(currentCategoryId, pageNumber);
+                    } else {
+                      fetchProducts(pageNumber);
+                    }
+                  }}
                   position="center"
                 />
               </div>
