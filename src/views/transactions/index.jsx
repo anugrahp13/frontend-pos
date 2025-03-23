@@ -246,7 +246,7 @@ export default function TransactionsIndex() {
                 </div>
                 <div className="card-body scrollable-card-body p-0">
                   {/* Order Items */}
-                  <OrderItemList carts={carts} />
+                  <OrderItemList carts={carts} fetchCarts={fetchCarts} />
                 </div>
                 <div className="card-body">
                   <div className="mt-3">
