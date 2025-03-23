@@ -19,6 +19,9 @@ import CustomerCreate from "./create";
 //import edit customer
 import CustomerEdit from "./edit";
 
+//import component DeleteButton
+import DeleteButton from "../../components/DeleteButton";
+
 export default function CustomersIndex() {
   //state customers
   const [customers, setCustomers] = useState([]);
@@ -147,6 +150,11 @@ export default function CustomersIndex() {
                               <div className="btn-list flex-nowrap">
                                 <CustomerEdit
                                   customerId={customer.id}
+                                  fetchData={fetchData}
+                                />
+                                <DeleteButton
+                                  id={customer.id}
+                                  endpoint={"/api/customers"}
                                   fetchData={fetchData}
                                 />
                               </div>
