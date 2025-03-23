@@ -19,6 +19,9 @@ import moneyFormat from "../../utils/moneyFormat";
 //impor component Barcode
 import Barcode from "./components/Barcode";
 
+//import create product
+import ProductCreate from "./create";
+
 export default function ProductsIndex() {
   //state products
   const [products, setProducts] = useState([]);
@@ -103,6 +106,7 @@ export default function ProductsIndex() {
           <div className="row">
             <div className="col-12 mb-3">
               <div className="input-group">
+                <ProductCreate fetchData={fetchData} />
                 <input
                   type="text"
                   className="form-control"
