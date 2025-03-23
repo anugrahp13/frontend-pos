@@ -1,5 +1,5 @@
-//import useState, useEffect
-import { useState, useEffect } from "react";
+//import useState, useEffect dan useRef
+import { useState, useEffect, useRef } from "react";
 
 //import layout admin
 import LayoutAdmin from "../../layouts/admin";
@@ -27,6 +27,12 @@ export default function TransactionsIndex() {
     total: 0,
   });
 
+  //state barcode
+  const [barcode, setBarcode] = useState("");
+
+  //ref search
+  const searchInputRef = useRef(null);
+
   //token
   const token = Cookies.get("token");
 
@@ -53,10 +59,39 @@ export default function TransactionsIndex() {
     }
   };
 
+  //function "fetchProductByBarcode"
+  const fetchProductByBarcode = async (barcode) => {
+    if (token) {
+      //set authorization header with token
+      Api.defaults.headers.common["Authorization"] = token;
+
+      await Api.post("/api/products-by-barcode", {
+        barcode: barcode,
+      }).then((response) => {
+        //set data response to state "products"
+        setProducts(response.data.data);
+      });
+    }
+  };
+
+  //function searchHandler
+  const searchHandler = (e) => {
+    //set state "barcode"
+    setBarcode(e.target.value);
+
+    //call function "fetchProductByBarcode"
+    fetchProductByBarcode(e.target.value);
+  };
+
   //hook
   useEffect(() => {
     //call function "fetchProducts"
     fetchProducts();
+
+    // check if searchInputRef is defined
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
   }, []);
 
   return (
@@ -66,6 +101,36 @@ export default function TransactionsIndex() {
           <div className="row">
             <div className="col-md-8 mb-3">
               {/* Search and Scan Barcode */}
+              <form onSubmit={searchHandler} autoComplete="off" noValidate>
+                <div className="input-icon">
+                  <span className="input-icon-addon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="icon"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="currentColor"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                      <path d="M21 21l-6 -6" />
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Scan Barcode"
+                    value={barcode}
+                    onChange={(e) => searchHandler(e)}
+                    ref={searchInputRef}
+                  />
+                </div>
+              </form>
 
               {/* Category List */}
 
