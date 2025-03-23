@@ -13,6 +13,9 @@ import Cookies from "js-cookie";
 //import moneyFormat
 import moneyFormat from "../../utils/moneyFormat";
 
+//import export button
+import ExportButton from "../../components/ExportButton";
+
 export default function Profits() {
   //state date
   const [startDate, setStartDate] = useState("");
@@ -130,6 +133,13 @@ export default function Profits() {
                   </form>
                   {profits.length > 0 ? (
                     <>
+                      <div className="export text-end mb-3 mt-5">
+                        <ExportButton
+                          startDate={startDate}
+                          endDate={endDate}
+                          type="profits"
+                        />
+                      </div>
                       <table className="table table-bordered">
                         <thead>
                           <tr style={{ backgroundClip: "#e6e6e7" }}>
