@@ -1,7 +1,47 @@
 //import moneyFormat
 import moneyFormat from "../../../utils/moneyFormat";
 
-export default function ProductList({ products }) {
+//import service api
+import Api from "../../../services/api";
+
+//import js cookie
+import Cookies from "js-cookie";
+
+//import toats
+import toast from "react-hot-toast";
+
+export default function ProductList({ products, fetchCarts }) {
+  //token
+  const token = Cookies.get("token");
+
+  //function addToCart
+  const addToCart = (product) => {
+    if (token) {
+      //set authorization header with token
+      Api.defaults.headers.common["Authorization"] = token;
+
+      Api.post("/api/carts", {
+        product_id: product.id,
+        qty: 1,
+        price: product.sell_price,
+      }).then((response) => {
+        //show toast
+        toast.success(`${response.data.meta.message}`, {
+          duration: 4000,
+          position: "top-right",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+
+        //call fetchCarts
+        fetchCarts();
+      });
+    }
+  };
+
   return (
     <div className="row mt-3">
       {products.length > 0 ? (
@@ -18,6 +58,12 @@ export default function ProductList({ products }) {
                   className="me-2 rounded"
                 />
                 <h4 className="mb-0 mt-2">{product.title}</h4>
+                <button
+                  className="btn btn-primary mt-3 w-100 rounded"
+                  onClick={() => addToCart(product)}
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           </div>
