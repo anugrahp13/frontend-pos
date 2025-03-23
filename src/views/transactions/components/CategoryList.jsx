@@ -56,7 +56,7 @@ export default function CategoryList({
                   <div className="card card-link card-link-pop rounded">
                     <div className="card-body d-flex align-items-center justify-content-center p-2">
                       <img
-                        src={`${import.meta.env.VITE_APP_BASEURL}/${
+                        src={`${import.meta.env.VITE_APP_BASEURL}/uploads/${
                           category.image
                         }`}
                         alt={category.name}
