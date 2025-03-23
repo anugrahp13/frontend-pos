@@ -220,7 +220,7 @@ export default function TransactionsIndex() {
               />
 
               {/* Product List */}
-              <ProductList products={products} />
+              <ProductList products={products} fetchCarts={fetchCarts} />
 
               {/* Pagination */}
               <div className="row mt-3">
