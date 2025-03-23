@@ -25,6 +25,12 @@ export default function Dashboard() {
   const [salesDate, setSalesDate] = useState([]);
   const [salesTotal, setSalesTotal] = useState([]);
 
+  //state profits
+  const [sumProfitsToday, setSumProfitsToday] = useState(0);
+  const [sumProfitsWeek, setSumProfitsWeek] = useState(0);
+  const [profitsDate, setProfitsDate] = useState([]);
+  const [profitsTotal, setProfitsTotal] = useState([]);
+
   //function fetch data dashboard
   const fetchData = async () => {
 
@@ -46,6 +52,12 @@ export default function Dashboard() {
         setSumSalesWeek(response.data.data.sum_sales_week);
         setSalesDate(response.data.data.sales.sales_date);
         setSalesTotal(response.data.data.sales.sales_total);
+
+        //assign response data to state "sumProfitsToday", "sumProfitsWeek", "profitsDate", "profitsTotal"
+        setSumProfitsToday(response.data.data.sum_profits_today);
+        setSumProfitsWeek(response.data.data.sum_profits_week);
+        setProfitsDate(response.data.data.profits.profits_date);
+        setProfitsTotal(response.data.data.profits.profits_total);
 
       } catch (error) {
         console.error("There was an error fetching the data!", error);
@@ -103,11 +115,23 @@ export default function Dashboard() {
       labels: salesDate,
     });
 
+    const profitsChart = initializeChart('chart-profits', {
+        ...commonChartOptions,
+        chart: { type: "bar", height: 40.0, sparkline: { enabled: true } },
+        plotOptions: { bar: { columnWidth: '50%' } },
+        series: [{
+          name: "Profits",
+          data: profitsTotal,
+        }],
+        labels: profitsDate,
+      });
+
     // Cleanup charts on component unmount
     return () => {
       salesChart.destroy();
+      profitsChart.destroy();
     };
-  }, [salesDate, salesTotal]);
+  }, [salesDate, salesTotal, profitsDate, profitsTotal]);
 
   return (
     <LayoutAdmin>
@@ -146,7 +170,7 @@ export default function Dashboard() {
                   <div className="d-flex align-items-center ">
                     <div className="subheader">Profits Today</div>
                   </div>
-                  <div className="h1 mb-0 me-2 mt-4"></div>
+                  <div className="h1 mb-0 me-2 mt-4">{moneyFormat(sumProfitsToday)}</div>
                 </div>
               </div>
             </div>
@@ -176,7 +200,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className="d-flex align-items-baseline">
-                    <div className="h1 mb-3 me-2"></div>
+                    <div className="h1 mb-3 me-2">{moneyFormat(sumProfitsWeek)}</div>
                   </div>
                   <div id="chart-profits" className="chart-sm"></div>
                 </div>
